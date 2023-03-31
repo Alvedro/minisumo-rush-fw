@@ -20,11 +20,12 @@ void EnterDebug(void)
 	if(Button_GetState() == true)
 	{
 		Tactic_RunTestMode();
+		
 		Terminal_SetLevel(LOG_DEBUG);
 	}
 	else
 	{
-		Terminal_SetLevel(LOG_NONE); //todo: should be LOG_NONE
+		Terminal_SetLevel(LOG_NONE);
 	}
 	
 	while(Button_GetState() == true);

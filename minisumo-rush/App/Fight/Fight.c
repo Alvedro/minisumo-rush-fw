@@ -217,6 +217,8 @@ static void Loop(void)
 
 	if(sActiveSensorsCnt > 0U)
 	{
+		sDefaultFightSpeed = (int32_t)FIGHT_MAX_ATTACK_SPEED;
+		
 		sCourse = (sCourse * (int32_t)sPid.scale) / (int32_t)sActiveSensorsCnt;
 		sLastCourse = sCourse;
 		
@@ -230,9 +232,17 @@ static void Loop(void)
 			sPid.integral = 0;
 			sPid.derivative = 0;
 			sPid.lastError = 0;
+			
+			sDefaultFightSpeed = (int32_t)FIGHT_MOTOR_DEFAULT_SPEED;
 		}
 		else
 		{
+			//todo: worth? set default speed when object disappear from the front sensor
+// 			if(sLastCourse == 0)
+// 			{
+// 				sDefaultFightSpeed = (int32_t)FIGHT_MOTOR_DEFAULT_SPEED;		
+// 			}
+			
 			sCourse = sLastCourse;	
 		}	
 	}
@@ -253,20 +263,15 @@ static void Loop(void)
 		sPid.derivative = 0;
 		sPid.lastError = 0;	
 	}
-	else
-	{
-		sDefaultFightSpeed = (int32_t)FIGHT_MOTOR_DEFAULT_SPEED;
-	}
 	
 	int32_t pidOut = ComputePidOutput(&sPid, sCourse);
 
 	Terminal_Log(TASK_NAME, LOG_OK, "L: %ld R: %ld Err: %ld DefSp: %ld PidOut: %ld", sDefaultFightSpeed + pidOut, sDefaultFightSpeed - pidOut, sCourse, sDefaultFightSpeed, pidOut);
 	
+	//todo: for debug purpose only
 // 	Motor_Run(MOTOR_ID_LEFT, 0);
 // 	Motor_Run(MOTOR_ID_RIGHT, 0);
 
 	Motor_Run(MOTOR_ID_LEFT, (int16_t)(sDefaultFightSpeed + pidOut));
 	Motor_Run(MOTOR_ID_RIGHT, (int16_t)(sDefaultFightSpeed - pidOut));
 }
-
-//sDefaultFightSpeed set it to 255 when sensors see

@@ -217,7 +217,8 @@ static void TaskHandler(void)
 				Led_ShortBlinkBlue();
 				Led_ShortBlinkGreen();
 			}
-			else if(Tactic_IsTestMode() == true)
+			else if(Tactic_IsTestMode() == true
+			|| Terminal_GetLevel() < LOG_NONE)
 			{
 				Led_ShortBlinkRed();
 // 				Led_ShortBlinkBlue();	

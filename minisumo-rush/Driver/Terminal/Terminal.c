@@ -52,7 +52,7 @@ void Terminal_Init(void)
 	
 	if(sLogLevel != LOG_NONE)
 	{
-// 		UsartSendString("Rush starting...\r\n");	
+		UsartSendString("Rush starting...\r\n");	
 	}
 }
 
